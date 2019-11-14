@@ -1,0 +1,432 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef		long long       ll;
+typedef		vector<ll>      vll;
+#define		pb              push_back
+#define		PB              pop_back
+#define		nn              "\n"
+#define		all(p)          p.begin(),p.end()
+#define		zz(v)           (ll)v.size()
+#define		mms(ar,a)       memset(ar,a,sizeof(ar))
+#define		ss              ' '
+#define 	S(a)            scanf("%lld",&a)
+#define 	SS(a,b)         scanf("%lld %lld",&a,&b)
+#define 	SSS(a,b,c)      scanf("%lld %lld %lld",&a,&b,&c)
+#define		gcd(a,b)        __gcd(a,b)
+#define		lcm(a,b)        (a*b)/gcd(a,b)
+#define		pi              acos(-1.0)
+
+***************************************************************************
+
+//bfs
+vll v[10];
+ll visited[10];
+ll level[10];
+
+void bfs(ll u){
+    visited[u]=1;
+    level[u]=0;
+    queue<ll>q;
+    q.push(u);
+
+    while(!q.empty()){
+        u=q.front();
+        visited[u]=1;
+        printf("pop -> %lld\n",u);
+        q.pop();
+        visited[u]=1;
+
+        for(ll i=0;i<zz(v[u]);i++){
+            ll p=v[u][i];
+            if(!visited[p]){
+                printf("pushing -> %lld\n",p);
+                visited[p]=1;
+                level[p]=level[u]+1;
+                q.push(p);
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    ll a,b,c,i,j,t,k,node,edge;
+    SS(node,edge);
+    for(i=1;i<=edge;i++){
+        SS(a,b);
+        v[a].pb(b);
+        v[b].pb(a);
+    }
+    printf("\n");
+    for(i=1;i<=edge;i++){
+        printf("node %lld connected with ->",i);
+        for(j=0;j<zz(v[i]);j++)
+            printf(" %lld",v[i][j]);
+        printf("\n");
+    }
+    printf("\n");
+    bfs(1);
+
+    printf("\n");
+    for(i=1;i<node;i++)
+        printf("the level of %lld nide is %lld\n",i,level[i]);
+
+    return 0;
+}
+
+**************************************************************************
+
+//order of two strings
+/*
+if two strings are given,, 
+are the characters of the 1st string maintain their order in the 2nd string........
+*/
+
+int main()
+{
+    ll a,b,c,i,j,t,k,lie,m,n,o,p,x,y,z;
+    c=0;
+    x=0;
+    string s1,s2;
+    cin>>s1>>s2;
+    for(i=0;i<s1.length();i++){
+        for(j=x;j<s2.length();j++){
+            if(s1[i]==s2[j]){
+                c++;
+                x=j+1;
+                break;
+            }
+        }
+    }
+    if(c==s1.length()) cout<<"Yes"<<nn;
+    else cout<<"No"<<nn;
+
+    return 0;
+}
+
+*******************************************************************
+
+//dfs
+#include <bits//stdc++.h>
+using namespace std;
+
+vector<int> g[128];
+bool seen[128];
+int n, e;
+
+void dfs(int u)
+{
+    seen[u] = true;
+    printf("%d ", u);
+    for(int i = 0; i < g[u].size(); i++) {
+        int v = g[u][i];
+        if(!seen[v]) dfs(v);
+    }
+}
+
+int main()
+{
+    scanf("%d %d", &n, &e);
+    for(int i=0; i<e; i++) {
+       int u, v;
+       cin >> u >> v;
+       g[u].push_back(v);
+    }
+    for(int i=1; i<=n; i++) if(!seen[i]) dfs(i);
+
+    return 0;
+}
+
+******************************************************************************
+
+//big_mod+mod_inv
+ll big_mod(ll b,ll p,ll m){
+    if(p==0) return 1;
+    if(p%2==0){
+        ll s=big_mod(b,p/2,m);
+        return ((s%m)*(s%m))%m;
+    }
+    return ((b%m)*(big_mod(b,p-1,m)%m))%m;
+}
+
+ll mod_inv(ll b,ll m){
+    return big_mod(b,m-2,m);
+}
+
+******************************************************************************
+
+//flood fill
+ll fx[]={ 1, -1,  0,  0};   // 4 direction
+ll fy[]={ 0,  0,  1, -1};  // 4 direction
+//ll fx[]={ 0,  0,  1, -1, -1,  1, -1,  1};  // King's Move / 8 direction
+//ll fy[]={-1,  1,  0,  0,  1,  1, -1, -1}; // King's Move / 8 direction
+//ll fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knight's Move
+//ll fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knight's Move
+ll row,column,cnt;
+char ch[22][22];
+
+void flood_fill(ll i,ll j){
+    if(i<0 || j<0 || i>row-1 || j>column-1) return;
+    if(ch[i][j]=='.'){
+        ch[i][j]='*';
+        cnt++;
+        for(ll k=0;k<4;k++){
+            ll x=i+fx[k];
+            ll y=j+fy[k];
+            flood_fill(x,y);
+        }
+    }
+}
+
+int main()
+{
+    ll i,j,b,c=0,t,a,p;
+    S(t);
+    while(t--){
+        cnt=0;
+        p=0;
+        SS(a,b);
+        row=b;
+        column=a;
+        getchar();
+        for(i=0;i<row;i++){
+            for(j=0;j<column;j++) scanf(" %c",&ch[i][j]);
+        }
+        for(i=0;i<row;i++){
+            for(j=0;j<column;j++){
+                if(ch[i][j]=='@'){ // start from "@" sign, find all "." sign;
+                    ch[i][j]='.';
+                    flood_fill(i,j);
+                    p=1;
+                    break;
+                }
+            }
+            if(p==1) break;
+        }
+        printf("Case %lld: %lld\n",++c,cnt);
+    }
+
+    return 0;
+}
+
+********************************************************************************
+
+//Euler_totient
+//for n
+ll totient(ll n){
+    ll s=n;
+    for(ll i=2;i<=n/i;i++){
+        if(n%i==0){
+            while(n%i==0) n/=i;
+            s-=s/i;
+        }
+    }
+    if(n>1) s-=s/n;
+    return s;
+}
+////////////////////
+//for 1-n
+ll ar[200010];
+void totient(){
+    ll n=200000;
+    for(ll i=1;i<=n;i++) ar[i]=i;
+    for(ll i=2;i<=n;i++){
+        if(ar[i]==i){
+            ar[i]=i-1;
+            for(ll j=i*2;j<=n;j+=i) ar[j]=(ar[j]/i)*(i-1);
+        }
+    }
+}
+
+*******************************************************************************
+
+//sieve
+bool ar[1000010];
+vll v;
+void sieve(ll n){
+    ll i,j;
+    v.pb(2LL);
+    for(i=3;i<n;i+=2){
+        if(ar[i]==0){
+            v.pb(i);
+            if(i>n/i) continue;
+            for(j=i*i;j<=n;j+=(i+i)) ar[j]=1;
+        }
+    }
+}
+
+int main(){
+//    freopen("input.txt","r",stdin);
+    ll a,b,c,i,j,t,k,lie,n,o,x,y,z,ar[200010];
+    sieve(100);
+    for(i=0;i<zz(v);i++){
+        cout<<v[i]<<ss;
+    }
+
+    return 0;
+}
+
+*************************************************************************
+
+//topological sort
+vll v[111];
+bool visited[111];
+stack<ll>ts;
+
+void dfs(ll u){
+    visited[u]=true;
+    for(ll i=0;i<zz(v[u]);i++){
+        if(!visited[v[u][i]]) dfs(v[u][i]);
+    }
+    ts.push(u);
+}
+
+int main(){
+//    freopen("input.txt","r",stdin);
+    ll a,b,c,i,j,t,vrtx,edg,k,lie,m,n,o,x,y,z,ar[200010];
+    while(SS(edg,vrtx) && vrtx||edg){
+        while(vrtx--){
+            SS(a,b);
+            v[a].pb(b);
+        }
+        memset(visited,0,sizeof(visited));
+        for(i=1;i<=edg;i++){
+            if(!visited[i]) dfs(i);
+        }
+        while(!ts.empty()){
+            if(zz(ts)==1) printf("%lld\n",ts.top());
+            else printf("%lld ",ts.top());
+            ts.pop();
+        }
+        for(i=0;i<111;i++) v[i].clear();
+    }
+
+    return 0;
+}
+
+****************************************************************************
+
+//cycle in graph
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef signed long long ull;
+vector<ull>g[100005];
+ull vis[100005]= {0},rectree[100005]= {0},ans=1,node=1;
+
+void dfs(ull s)
+{
+    vis[s]=1;
+    for(ull i=0; i<g[s].size(); i++)
+    {
+        if(rectree[g[s][i]]==1 && ans==1)
+        {
+            ans=0;
+            node=g[s][i];
+            return;
+        }
+        if(vis[g[s][i]]==0)
+        {
+            rectree[g[s][i]]=1;
+            dfs(g[s][i]);
+            if(ans==1)
+                rectree[g[s][i]]=0;
+        }
+    }
+}
+int main()
+{
+    ull n,m;
+    cin>>n>>m;
+    for(ull i=0; i<m; i++)
+    {
+        ull x,y;
+        cin>>x>>y;
+        g[x].push_back(y);
+    }
+    for(ull i=1; i<=n; i++)
+    {
+        rectree[i]=1;
+        if(vis[i]==0)
+            dfs(i);
+        if(ans==0)
+        {
+            break;
+        }
+        rectree[i]=0;
+    }
+    if(ans==0)
+    {
+        cout<<"CYCLE\n";
+        memset(vis,0,sizeof(vis));
+        memset(rectree,0,sizeof(rectree));
+        ans=1;
+        rectree[node]=1;
+        dfs(node);
+        for(ull i=1; i<=n; i++)
+        {
+            if(rectree[i]==1)
+                cout<<i<<" ";
+        }
+        cout<<node<<endl;
+    }
+    else
+        cout<<"NO CYCLE\n";
+    return 0;
+}
+
+***************************************************************************
+
+//segmented sieve
+vll v;
+bool ar[1000010];
+
+void sieve(){
+    ll i,j,n=1000010;
+    v.pb(2LL);
+    for(i=3;i<=n;i+=2){
+        if(ar[i]==0){
+            v.pb(i);
+            if(i>n/i) continue;
+            for(j=i*i;j<=n;j+=(i+i)) ar[j]=1;
+        }
+    }
+}
+
+void segmented_sieve(ll L,ll R)
+{
+    ll c=0;
+    bool isPrime[R-L+1];
+    for(ll i=0;i<=R-L+1;i++)
+        isPrime[i]=true;
+    if(L==1)
+        isPrime[0]=false;
+    for(ll i=0;v[i]*v[i]<=R;i++){
+        ll curPrime=v[i];
+        ll base=curPrime*curPrime;
+        if(base<L)
+            base=((L+curPrime-1)/curPrime)*curPrime;
+        for(ll j=base;j<=R;j+=curPrime)
+            isPrime[j-L]=false;
+    }
+    for(ll i=0;i<=R-L;i++){
+        if(isPrime[i]==true)
+            c++;;
+    }
+    printf("%lld\n",c);
+}
+
+int main()
+{
+    sieve();
+    ll l,r,t,c=0;
+    S(t);
+    while(t--){
+        SS(l,r);
+        printf("Case %lld: ",++c);
+        segmented_sieve(l,r);
+    }
+
+    return 0;
+}
