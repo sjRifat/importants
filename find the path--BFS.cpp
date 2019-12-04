@@ -55,7 +55,7 @@ int main()
         v[b].pb(a);
     }
     S(s);
-    bfs(1);
+    bfs(s);
     S(t);
     if(visited[t]==0) printf("no path\n");
     else{
