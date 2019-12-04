@@ -54,9 +54,9 @@ int main()
         v[a].pb(b);
         v[b].pb(a);
     }
-    S(s);
+    S(s); // source
     bfs(s);
-    S(t);
+    S(t); // destination
     if(visited[t]==0) printf("no path\n");
     else{
         vll path;
