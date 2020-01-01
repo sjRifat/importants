@@ -430,3 +430,31 @@ int main()
 
     return 0;
 }
+
+
+******************************************
+
+
+//big number division to find reminder
+ll mod(string num,ll a)
+{
+    ll res=0;
+    for(ll i=0;i<zz(num);i++)
+         res=(res*10+(ll)num[i]-'0')%a;
+    return res;
+}
+
+int main(){
+//    freopen("in.txt","r",stdin);
+    ll a,b,c,i,j,t,k,lie,m,n,o,x,y,z,ar[200010];
+    S(lie);
+    while(lie--){
+        S(n);
+        string s;
+        cin>>s;
+        z=mod(s,n);
+        printf("%lld\n",z);
+    }
+
+    return 0;
+}
