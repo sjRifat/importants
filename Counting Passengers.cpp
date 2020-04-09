@@ -1,11 +1,7 @@
+//problem link: https://codeto.win/problem/1061
+
 #include<bits/stdc++.h>
 using namespace std;
-#define   	pb 			    push_back
-#define   	nn 			    "\n"
-#define   	ss 			    ' '
-#define   	FOR(i,a,b) 		for(i=a;i<b;i++)
-typedef 	long long 		ll;
-typedef 	vector<ll>		vll;
 
 int main()
 {
