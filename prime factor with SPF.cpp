@@ -23,17 +23,16 @@ int main(){
 //    freopen("input.txt","r",stdin);
     ll a,b,i,j,t,k,lie,m,n,o,x,y,z;
     spfgen();
-    for(i=2;i<=1000000;i++){
-        x=i;
-        while(x!=1){
-            x/=spf[x];
-            ar[i]++;
-        }
-    }
     while(scanf("%lld",&n)==1){
-        printf("%lld\n",ar[n]);
+        while(n>1){
+            x=spf[n];
+            cout<<x<<' ';
+            while(n%x==0){
+                n/=x;
+            }
+        }
+        cout<<endl;
     }
-
 
     return 0;
 }
